@@ -1,16 +1,22 @@
  const axios = require("axios");
  const db = require("../config/sql");
  const repotable = require("../models/repo");
+
+/**
+ * Fetches all repositories of a GitHub user,
+ * stores them in MySQL, and saves the programming languages.
+ */
 module.exports.saverepositories = async function (req, res) {
     try {
-
+        // Get GitHub username from query parameters
         const username = req.query.username;
         if (!username) {
             return res.status(400).json({
                 message: "please enter username "
             })
         }
-       
+     
+       // Fetch all public repositories from GitHub
 
         const response = await axios.get(
         `https://api.github.com/users/${username}/repos`,
@@ -24,7 +30,7 @@ module.exports.saverepositories = async function (req, res) {
         );
 
 
-
+        // Fetch languages used in each repository
         const responses = await Promise.all(response.data.map(async (repo) => {
             const languageRepo = await axios.get(repo.languages_url, {
                 headers: {
@@ -42,6 +48,8 @@ module.exports.saverepositories = async function (req, res) {
             }
 
         }))
+     
+        // Create repositories table if it does not exist
         repotable();
         
         db.query(
@@ -108,8 +116,12 @@ module.exports.saverepositories = async function (req, res) {
 
 }   
 
-
+/**
+ * Retrieves all stored repositories of a specific GitHub user.
+ */
 module.exports.allrepositories = async function (req, res) {
+
+    // Read username from query parameter
 
     const username = req.query.username;
 
@@ -118,7 +130,7 @@ module.exports.allrepositories = async function (req, res) {
             message: "Username is required"
         });
     }
-
+  // Fetch repositories using INNER JOIN between users and repos table
     db.query(
         `SELECT
             r.id,
