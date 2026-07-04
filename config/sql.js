@@ -1,5 +1,10 @@
 // import mysql from 'mysql2';
 const mysql = require('mysql2');
+
+/**
+ * Creates a MySQL database connection
+ * using environment variables.
+ */
 const db=   mysql.createConnection({
     host:process.env.DB_HOST,
     user:process.env.DB_USER,
@@ -9,6 +14,7 @@ const db=   mysql.createConnection({
     
 });
 
+// Establish connection with MySQL database
  db.connect(function(error){
     if (error)
     {
