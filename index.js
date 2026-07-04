@@ -3,11 +3,13 @@ require("dotenv").config();
 const app =express();
 const port= process.env.PORT || 8000;
 const db=require('./config/sql');
-// import db from './config/sql.js';
 
+// Parse URL-encoded and JSON request bodies
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-app.use('/',require('./routes/index.js'));            
+// Register application routes
+app.use('/',require('./routes/index.js')); 
+// Start the Express server
 app.listen(port, function(err){
     if(err)
     {
