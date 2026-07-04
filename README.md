@@ -20,7 +20,7 @@ https://github.com/rachit3014/github-profile-analyzer
 
 # Postman Collection
 
-https://www.postman.com/flight-participant-88873717-s-team/workspace/github-profile-analyzer/collection/25847871-ef9d92a9-ddb6-4e9e-a351-0e050746066b?action=share&source=copy-link&creator=25847871
+https://www.postman.com/flight-participant-88873717-s-team/github-profile-analyzer/collection/vxigl1b/github-profile-analyzer-api
 
 ---
 
