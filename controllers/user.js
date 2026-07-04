@@ -2,7 +2,12 @@ const db = require('../config/sql');
 const axios = require('axios');
 const usertable = require('../models/user');
 
+/**
+ * Fetches a GitHub user's profile and stores it in the MySQL database.
+ */
 module.exports.userdata = async function (req, res) {
+    // Get GitHub username from query parameters
+    
     const username = req.query.username;
     console.log('username', username);
     try {
@@ -19,7 +24,11 @@ module.exports.userdata = async function (req, res) {
 // console.log('response from github api', reposonse);
 
         const data = reposonse.data;
+        
+        // Create users table if it does not exist
         usertable();
+        
+          // Insert or update GitHub user profile in MySQL
         db.query(
             ` INSERT INTO  users
             (username,name,followers,following,public_repos,avatar_url,profile_url) 
@@ -52,7 +61,8 @@ module.exports.userdata = async function (req, res) {
 
             }
         )
-
+        
+        // Prepare response object
         const userData = {
         username: data.login,
         name: data.name,
@@ -78,7 +88,11 @@ module.exports.userdata = async function (req, res) {
 
 }
 
+/**
+ * Retrieves all stored GitHub user profiles.
+ */
 module.exports.alluserprofile = async function (req, res) {
+    // Fetch all user profiles from the database
     db.query(
         `SELECT * FROM users`,
         (error, result) => {
@@ -98,8 +112,15 @@ module.exports.alluserprofile = async function (req, res) {
     )
 }
 
+
+/**
+ * Retrieves a single GitHub user profile using username.
+ */
 module.exports.singleprofile = async function (req, res) {
+    // Read username from query parameter
     const user = req.query.username;
+    
+    // Fetch a specific user profile
     db.query(
         `
         SELECT * FROM users WHERE username = ?`,
@@ -121,7 +142,15 @@ module.exports.singleprofile = async function (req, res) {
     )
 }
 
+/**
+ * Deletes a GitHub user profile from the database.
+ * Associated repositories are automatically removed
+ * through ON DELETE CASCADE.
+ */
+
 module.exports.deleteprofile = async function (req, res) {
+    
+    // Read username from query parameter
     const user = req.query.username;
     if(!user)
     {
@@ -130,6 +159,7 @@ module.exports.deleteprofile = async function (req, res) {
         })
     }
 
+    // Delete user profile from the database
     db.query(
         `
         DELETE FROM users WHERE username = ?`,
