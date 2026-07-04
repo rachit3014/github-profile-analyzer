@@ -1,5 +1,13 @@
 const db = require('../config/sql');
+
+ /**
+ * Creates the users table if it does not already exist.
+ * Stores GitHub profile information for analyzed users.
+*/
 const Usertable= ()=> {
+
+       
+    // Create users table
     db.query(
     `CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
