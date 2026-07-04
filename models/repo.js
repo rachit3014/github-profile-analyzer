@@ -1,6 +1,12 @@
 const db= require('../config/sql');
 
+/**
+ * Creates the repositories table if it does not already exist.
+ * Each repository is linked to a user through a foreign key.
+ */
 const repotable =()=>{
+    
+     // Create repositories table
     db.query(
         `CREATE TABLE IF NOT EXISTS repos (
             id INT AUTO_INCREMENT PRIMARY KEY,
